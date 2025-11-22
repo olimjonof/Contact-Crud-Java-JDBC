@@ -1,3 +1,5 @@
+package dto;
+
 public class Contact {
     private Integer id;
     private String name;

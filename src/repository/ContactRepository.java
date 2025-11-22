@@ -1,3 +1,8 @@
+package repository;
+
+import dto.Contact;
+import util.DataBaseUtil;
+
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +13,7 @@ public class ContactRepository {
 
     public boolean saveContact(Contact contact){
         try {
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            Connection connection = DataBaseUtil.getConnection();
             String sql = "insert into contact(name, surname, phone) values(?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -27,7 +32,7 @@ public class ContactRepository {
     public Contact getByPhone(String phone){
         Contact contact = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            Connection connection = DataBaseUtil.getConnection();
             String sql ="select * from contact where phone = ? ";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1,phone);
@@ -52,7 +57,7 @@ public class ContactRepository {
         Connection connection = null;
         List<Contact> contactList = new LinkedList<>();
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            connection = DataBaseUtil.getConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from contact");
 
@@ -80,7 +85,7 @@ public class ContactRepository {
     public int delete(String phone){
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            connection = DataBaseUtil.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("Delete * from contact where phone=?0");
             preparedStatement.setString(1,phone);
             int effectedRows = preparedStatement.executeUpdate();
@@ -102,7 +107,7 @@ public class ContactRepository {
         Connection connection = null;
         List<Contact> contactList = new LinkedList<>();
         try {
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            connection = DataBaseUtil.getConnection();
             String sql = "select * from contact where lower(name) like ? or lower(surname) like ? or phone like ?;";
             String param = "%"+query.toLowerCase() + "%";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
