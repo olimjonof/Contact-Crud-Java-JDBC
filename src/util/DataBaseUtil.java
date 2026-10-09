@@ -27,9 +27,17 @@ public class DataBaseUtil {
     }
     public static Connection getConnection(){
         try {
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/db_lesson","db_user","1234");
+            return DriverManager.getConnection(
+                    env("DB_URL", "jdbc:postgresql://localhost:5432/db_lesson"),
+                    env("DB_USERNAME", "postgres"),
+                    env("DB_PASSWORD", ""));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static String env(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return value != null ? value : defaultValue;
     }
 }
